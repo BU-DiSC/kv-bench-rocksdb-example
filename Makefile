@@ -1,4 +1,4 @@
-rocksdbpath=../skew-aware-rocksdb-8.9.1
+rocksdbpath=../rocksdb
 #rocksdbpath=../rocksdb-8.9.1
 include ${rocksdbpath}/make_config.mk
 

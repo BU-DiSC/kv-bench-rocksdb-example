@@ -89,8 +89,8 @@ bool FlushMemTableMayAllComplete(DB *db) {
     success = db->GetIntProperty("rocksdb.mem-table-flush-pending", &pending_flush)
 							 && db->GetIntProperty("rocksdb.num-running-flushes", &running_flush);
   } while (pending_flush || running_flush || !success);
-	return ((static_cast_with_check<DBImpl, DB>(db->GetRootDB()))
-      		->WaitForFlushMemTable(static_cast<ColumnFamilyHandleImpl*>(db->DefaultColumnFamily())->cfd())) == Status::OK();
+    sleep_for_ms(WAIT_INTERVAL);
+	return true;
 }
 
 void printEmulationOutput(const EmuEnv* _env, const QueryTracker *track, uint16_t runs) {
