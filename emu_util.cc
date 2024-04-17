@@ -14,7 +14,6 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "sys/times.h"
-#include "sys/vtimes.h"
 
 #define WAIT_INTERVAL 100
 
