@@ -106,6 +106,7 @@ struct QueryTracker {
   uint64_t workload_exec_time = 0;
   uint64_t experiment_exec_time = 0;
 
+  uint64_t bytes_read = 0;
 };
 
 // Preload workload into memory,

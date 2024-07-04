@@ -1,3 +1,5 @@
 *.txt
 plain_benchmark
 plain_benchmark_debug
+simple_benchmark
+simple_benchmark_debug

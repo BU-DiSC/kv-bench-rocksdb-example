@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include "rocksdb/db.h"
+#include "rocksdb/iostats_context.h"
 #include "rocksdb/table.h"
 #include "rocksdb/filter_policy.h"
 #include "rocksdb/cache.h"
@@ -256,6 +257,7 @@ void populateQueryTracker(QueryTracker *query_track, DB* _db, const BlockBasedTa
   query_track->workload_exec_time = query_track->inserts_cost + query_track->updates_cost + query_track->point_deletes_cost 
                                     + query_track->range_deletes_cost + query_track->point_lookups_cost + query_track->zero_point_lookups_cost
                                     + query_track->range_lookups_cost;
+  query_track->bytes_read += get_iostats_context()->bytes_read;
 }
 
 void db_point_lookup(DB* _db, const ReadOptions *read_op, const std::string key, const int verbosity, QueryTracker *query_track){
