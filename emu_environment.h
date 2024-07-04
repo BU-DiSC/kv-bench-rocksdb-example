@@ -53,6 +53,7 @@ public:
   uint32_t eval_point_read_statistics_accuracy_interval;
   // throughput_collect_interval == 0 means not collecting throughput
   uint32_t throughput_collect_interval;
+  string throughput_path;
 };
 
 #endif /*EMU_ENVIRONMENT_H_*/

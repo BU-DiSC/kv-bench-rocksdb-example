@@ -1,6 +1,10 @@
 #include "emu_environment.h"
 
-
+// Specify your path of workload file here
+std::string ingestion_workloadPath = "./workload.txt";
+std::string query_workloadPath = "./workload.txt";
+std::string kDBPath = "./db_working_home";
+std::string throughputPath = "./throughputs.txt";
 
 
 /*Set up the singleton object with the experiment wide options*/
@@ -24,22 +28,22 @@ EmuEnv::EmuEnv()
 
   // TableOptions
   no_block_cache = false;                                        // TBC
-  block_cache_capacity = 8*1024*1024;				// default 8 MB
+  block_cache_capacity = 8*1024;				// KB (default 8 MB)
 
   // Other DBOptions
   create_if_missing = true;
 
 
-  path = ""; 
-  ingestion_wpath = ""; 
-  query_wpath = ""; 
+  path = kDBPath; 
+  ingestion_wpath = ingestion_workloadPath; 
+  query_wpath = query_workloadPath; 
 
   string experiment_name = ""; 
   string experiment_starting_time = "";
 
   show_progress=false;
   throughput_collect_interval = 0;
-  
+  throughput_path = throughputPath;
 }
 
 EmuEnv* EmuEnv::getInstance()

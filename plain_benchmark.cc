@@ -23,11 +23,6 @@
 
 using namespace rocksdb;
 
-// Specify your path of workload file here
-std::string ingestion_workloadPath = "./workload.txt";
-std::string query_workloadPath = "./workload.txt";
-std::string kDBPath = "./db_working_home";
-std::string throughputPath = "./throughputs.txt";
 QueryTracker global_query_tracker;
 DB* db = nullptr;
 
@@ -158,7 +153,7 @@ int runExperiments(EmuEnv* _env) {
     for (int i = 0; i < throughput_collector.size(); i++) {
       throughput_collector[i] /= _env->experiment_runs;
     }
-    write_collected_throughput({throughput_collector}, {"throughput"}, throughputPath, _env->throughput_collect_interval);
+    write_collected_throughput({throughput_collector}, {"throughput"}, _env->throughput_path, _env->throughput_collect_interval);
   }
 
   return 0;
@@ -212,25 +207,25 @@ int parse_arguments2(int argc, char *argv[], EmuEnv* _env) {
       return 1;
   }
 
-  _env->size_ratio = size_ratio_cmd ? args::get(size_ratio_cmd) : 2;
-  _env->buffer_size_in_pages = buffer_size_in_pages_cmd ? args::get(buffer_size_in_pages_cmd) : 128;
-  _env->entries_per_page = entries_per_page_cmd ? args::get(entries_per_page_cmd) : 128;
-  _env->entry_size = entry_size_cmd ? args::get(entry_size_cmd) : 128;
+  _env->size_ratio = size_ratio_cmd ? args::get(size_ratio_cmd) : _env->size_ratio;
+  _env->buffer_size_in_pages = buffer_size_in_pages_cmd ? args::get(buffer_size_in_pages_cmd) : _env->buffer_size_in_pages;
+  _env->entries_per_page = entries_per_page_cmd ? args::get(entries_per_page_cmd) : _env->entries_per_page;
+  _env->entry_size = entry_size_cmd ? args::get(entry_size_cmd) : _env->entry_size;
   _env->buffer_size = buffer_size_cmd ? args::get(buffer_size_cmd) : _env->buffer_size_in_pages * _env->entries_per_page * _env->entry_size;
-  _env->verbosity = verbosity_cmd ? args::get(verbosity_cmd) : 0;
+  _env->verbosity = verbosity_cmd ? args::get(verbosity_cmd) : _env->verbosity;
   _env->no_block_cache = no_block_cache_cmd ? true : false;
-  _env->block_cache_capacity = block_cache_capacity_cmd ? args::get(block_cache_capacity_cmd) : 8*1024;
+  _env->block_cache_capacity = block_cache_capacity_cmd ? args::get(block_cache_capacity_cmd) : _env->block_cache_capacity;
 
-  _env->experiment_runs = experiment_runs_cmd ? args::get(experiment_runs_cmd) : 1;
-  _env->destroy = destroy_cmd ? true : false;
-  _env->use_direct_reads = direct_reads_cmd ? true : false;
-  _env->use_direct_io_for_flush_and_compaction = direct_writes_cmd ? true : false;
-  _env->path = path_cmd ? args::get(path_cmd) : kDBPath;
-  _env->ingestion_wpath = ingestion_wpath_cmd ? args::get(ingestion_wpath_cmd) : ingestion_workloadPath;
-  _env->query_wpath = query_wpath_cmd ? args::get(query_wpath_cmd) : query_workloadPath;
+  _env->experiment_runs = experiment_runs_cmd ? args::get(experiment_runs_cmd) : _env->experiment_runs;
+  _env->destroy = destroy_cmd ? true : _env->destroy;
+  _env->use_direct_reads = direct_reads_cmd ? true : _env->use_direct_reads;
+  _env->use_direct_io_for_flush_and_compaction = direct_writes_cmd ? true : _env->use_direct_io_for_flush_and_compaction;
+  _env->path = path_cmd ? args::get(path_cmd) : _env->path;
+  _env->ingestion_wpath = ingestion_wpath_cmd ? args::get(ingestion_wpath_cmd) : _env->ingestion_wpath;
+  _env->query_wpath = query_wpath_cmd ? args::get(query_wpath_cmd) : _env->query_wpath;
 
-  _env->throughput_collect_interval = collect_throughput_interval_cmd ? args::get(collect_throughput_interval_cmd) : 0;
-  throughputPath = throughput_path_cmd ? args::get(throughput_path_cmd) : "./throughputs.txt";
+  _env->throughput_collect_interval = collect_throughput_interval_cmd ? args::get(collect_throughput_interval_cmd) : _env->throughput_collect_interval;
+  _env->throughput_path = throughput_path_cmd ? args::get(throughput_path_cmd) : _env->throughput_path;
   return 0;
 }
 
